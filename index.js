@@ -60,8 +60,18 @@ app.post('/agregar', async (req, res) => {
 });
 
 // Editar deporte
-app.get('/editar', async (req, res) => {
-    
+app.put('/editar', async (req, res) => {
+    const nombre = req.body.nombre
+    const precio = req.body.precio
+    const stringDeportes = await readFile(pathFile, 'utf8')
+    const deportes = JSON.parse(stringDeportes)
+    const deporte = deportes.find((item) => item.nombre === nombre);
+    if (!deporte) {
+        return res.status(404).json({ ok: false, msg: "Deporte no encontrado" });
+    }
+    deporte.precio = precio
+    deporte.nombre = nombre
+    await writeFile(pathFile, JSON.stringify(deportes))
     res.json({ message: 'Deporte editado exitosamente' });
 });
 
@@ -71,7 +81,6 @@ app.delete('/eliminar', async (req, res) => {
     const stringDeportes = await readFile(pathFile, 'utf8');
     const deportes = JSON.parse(stringDeportes);
     const deporte = deportes.find((item) => item.nombre === nombre);
-    console.log(nombre)
     if (!deporte) {
         return res.status(404).json({ ok: false, msg: "Deporte no encontrado" });
     }

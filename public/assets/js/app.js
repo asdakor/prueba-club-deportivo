@@ -48,14 +48,14 @@ function agregar() {
 function edit() {
     const nombre = $('#nombreModal').val();
     const precio = $('#precioModal').val();
-    axios.get(`/editar`, {
-        params: { nombre, precio }
-    }).then((response) => {
-        alert(response.data.message);
-        getData();
-    }).catch((error) => {
-        console.error('Error al editar deporte:', error);
-    });
+    axios.put(`/editar`, { nombre, precio })
+        .then((response) => {
+            alert(response.data.message);
+            getData();
+        })
+        .catch((error) => {
+            console.error('Error al editar deporte:', error);
+        });
     $('#exampleModal').modal('hide');
 }
 
