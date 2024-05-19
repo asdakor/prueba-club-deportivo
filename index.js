@@ -66,9 +66,17 @@ app.get('/editar', async (req, res) => {
 });
 
 // Eliminar deporte
-app.get('/eliminar', async (req, res) => {
-    const { nombre } = req.query;
-    // Tu lógica para eliminar el deporte
+app.delete('/eliminar', async (req, res) => {
+    const nombre = req.query.nombre;
+    const stringDeportes = await readFile(pathFile, 'utf8');
+    const deportes = JSON.parse(stringDeportes);
+    const deporte = deportes.find((item) => item.nombre === nombre);
+    console.log(nombre)
+    if (!deporte) {
+        return res.status(404).json({ ok: false, msg: "Deporte no encontrado" });
+    }
+    const newDeportes = deportes.filter((item) => item.nombre !== nombre);
+    await writeFile(pathFile, JSON.stringify(newDeportes));
     res.json({ message: 'Deporte eliminado exitosamente' });
 });
 //CONFIGURACION PAGINAS NO RUTEADAS MSJ ERROR (SIEMPRE AL FINAL)

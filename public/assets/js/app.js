@@ -60,12 +60,12 @@ function edit() {
 }
 
 function eliminar(nombre) {
-    axios.get(`/eliminar`, {
-        params: { nombre }
-    }).then((response) => {
-        alert(response.data.message);
-        getData();
-    }).catch((error) => {
-        console.error('Error al eliminar deporte:', error);
-    });
+    axios.delete(`/eliminar?nombre=${nombre}`)
+        .then((response) => {
+            alert(response.data.message);
+            getData();
+        })
+        .catch((error) => {
+            console.error('Error al eliminar deporte:', error);
+        });
 }
